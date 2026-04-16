@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" fill="none">
+  <!-- Shield / crest mark -->
+  <path d="M20 8 L20 46 Q20 62 36 70 Q52 62 52 46 L52 8 Z" fill="#1B3A6B"/>
+  <path d="M26 14 L26 45 Q26 57 36 64 Q46 57 46 45 L46 14 Z" fill="none" stroke="#C9971C" stroke-width="1.5"/>
+  <!-- AH monogram inside shield -->
+  <text x="28" y="48" font-family="Georgia, serif" font-size="18" font-weight="700" fill="#C9971C" letter-spacing="-1">AH</text>
+
+  <!-- Wordmark -->
+  <text x="68" y="34" font-family="Georgia, serif" font-size="20" font-weight="700" fill="#1B3A6B" letter-spacing="1">ALLIED HENNA</text>
+  <text x="69" y="52" font-family="Arial, sans-serif" font-size="9.5" font-weight="400" fill="#4A6FA5" letter-spacing="3.5">BANK</text>
+
+  <!-- Tagline -->
+  <line x1="68" y1="59" x2="295" y2="59" stroke="#C9971C" stroke-width="0.8"/>
+  <text x="69" y="71" font-family="Arial, sans-serif" font-size="7.5" font-weight="300" fill="#6B7A8D" letter-spacing="1.8">BANKING WITH PURPOSE · BUILT FOR EUROPE</text>
+</svg>
