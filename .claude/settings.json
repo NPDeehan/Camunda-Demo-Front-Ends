@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(npx tsc *)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\NiallDeehan\\Documents\\GitHub\\Camunda-Demo-Front-Ends\\.claude"
     ]
   }
 }

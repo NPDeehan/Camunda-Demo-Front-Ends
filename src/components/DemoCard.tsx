@@ -6,19 +6,23 @@ export default function DemoCard({ demo }: { demo: DemoConfig }) {
     <Link
       to={`/${demo.id}`}
       className="demo-card"
-      style={{ borderTopColor: demo.branding.primaryColor }}
+      style={{ '--card-primary': demo.branding.primaryColor } as React.CSSProperties}
     >
-      {demo.branding.logo && (
-        <img src={demo.branding.logo} alt="" className="demo-card-logo" />
-      )}
-      <h3 className="demo-card-title">{demo.title}</h3>
-      <p className="demo-card-desc">{demo.description}</p>
-      <span
-        className="demo-card-launch"
-        style={{ color: demo.branding.primaryColor }}
+      <div
+        className="demo-card-logo-wrap"
+        style={{ background: `${demo.branding.primaryColor}12` }}
       >
-        Launch &rarr;
-      </span>
+        {demo.branding.logo && (
+          <img src={demo.branding.logo} alt="" className="demo-card-logo" />
+        )}
+      </div>
+      <div className="demo-card-body">
+        <h3 className="demo-card-title">{demo.title}</h3>
+        <p className="demo-card-desc">{demo.description}</p>
+      </div>
+      <div className="demo-card-footer">
+        <span className="demo-card-launch">Launch &rarr;</span>
+      </div>
     </Link>
   );
 }

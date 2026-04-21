@@ -28,11 +28,13 @@ export default function DemoShell() {
   return (
     <div
       className="demo-shell"
-      style={{ background: config.branding.backgroundColor }}
+      style={{ background: config.branding.backgroundColor ?? '#f5f7fa' }}
     >
       <div className="demo-header" style={{ backgroundColor: config.branding.primaryColor }}>
         {config.branding.logo && (
-          <img src={config.branding.logo} alt="" className="demo-header-logo" />
+          <div className="demo-header-logo-wrap">
+            <img src={config.branding.logo} alt="" className="demo-header-logo" />
+          </div>
         )}
         <h1 className="demo-header-title">{config.title}</h1>
         <Link to="/" className="demo-header-back">

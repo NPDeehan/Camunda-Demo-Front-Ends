@@ -11,6 +11,35 @@ interface CamundaFormRendererProps {
   submitting?: boolean;
 }
 
+async function uploadToDocumentStore(file: File): Promise<unknown> {
+  const formData = new FormData();
+  formData.append('file', file, file.name);
+  const res = await fetch('/api/documents', { method: 'POST', body: formData });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`Document upload failed: ${res.status}${text ? ` — ${text}` : ''}`);
+  }
+  return res.json();
+}
+
+async function resolveFiles(
+  data: Record<string, unknown>,
+  files: Map<string, File[]>,
+): Promise<Record<string, unknown>> {
+  const resolved = { ...data };
+  await Promise.all(
+    Object.entries(data).map(async ([key, value]) => {
+      if (typeof value === 'string' && value.startsWith('files::')) {
+        const fileList = files.get(value);
+        if (fileList?.length) {
+          resolved[key] = await Promise.all(fileList.map(uploadToDocumentStore));
+        }
+      }
+    }),
+  );
+  return resolved;
+}
+
 export default function CamundaFormRenderer({
   schema,
   data = {},
@@ -32,13 +61,18 @@ export default function CamundaFormRenderer({
 
     form.on(
       'submit',
-      (event: { data: Record<string, unknown>; errors: Record<string, unknown> }) => {
+      async (event: {
+        data: Record<string, unknown>;
+        errors: Record<string, unknown>;
+        files: Map<string, File[]>;
+      }) => {
         if (Object.keys(event.errors).length > 0) {
           onError?.(event.errors);
           return;
         }
-        onSubmit(event.data);
-      }
+        const resolved = await resolveFiles(event.data, event.files);
+        onSubmit(resolved);
+      },
     );
 
     return () => {

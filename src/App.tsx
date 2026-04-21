@@ -4,6 +4,7 @@ import Hub from './pages/Hub';
 import DemoShell from './components/DemoShell';
 import DemoFormPage from './pages/DemoFormPage';
 import DemoSuccessPage from './pages/DemoSuccessPage';
+import DemoTaskLoopPage from './pages/DemoTaskLoopPage';
 import DemoCustomPage from './pages/DemoCustomPage';
 import NotFound from './pages/NotFound';
 import './styles/global.css';
@@ -17,6 +18,7 @@ function App() {
           <Route path=":demoId" element={<DemoShell />}>
             <Route index element={<DemoFormPage />} />
             <Route path="success" element={<DemoSuccessPage />} />
+            <Route path="tasks" element={<DemoTaskLoopPage />} />
             <Route path=":pageSlug" element={<DemoCustomPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />

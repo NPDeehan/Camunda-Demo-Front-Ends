@@ -12,6 +12,24 @@ export interface ProcessInstanceResponse {
   version: number;
 }
 
+export interface UserTask {
+  userTaskKey: string;
+  elementId: string;
+  name: string;
+  processInstanceKey: string;
+  formKey?: string;
+}
+
+export interface UserTaskFormResponse {
+  formKey: string;
+  schema: string;
+}
+
+export interface ProcessInstanceState {
+  processInstanceKey: string;
+  state: 'ACTIVE' | 'COMPLETED' | 'CANCELED' | 'TERMINATED';
+}
+
 export async function getProcessDefinitionKey(
   bpmnProcessId: string
 ): Promise<string> {
@@ -49,4 +67,77 @@ export async function startProcessInstance(
       body: JSON.stringify({ processDefinitionKey, variables }),
     }
   );
+}
+
+export async function listActiveUserTasks(
+  processInstanceKey: string,
+  elementIds?: string[]
+): Promise<UserTask[]> {
+  const result = await camundaFetch<{ items: UserTask[] }>('/user-tasks/search', {
+    method: 'POST',
+    body: JSON.stringify({
+      filter: { processInstanceKey, state: 'CREATED' },
+      page: { limit: 10 },
+    }),
+  });
+  if (elementIds && elementIds.length > 0) {
+    return result.items.filter(t => elementIds.includes(t.elementId));
+  }
+  return result.items;
+}
+
+export async function getUserTaskForm(
+  userTaskKey: string
+): Promise<UserTaskFormResponse> {
+  return camundaFetch<UserTaskFormResponse>(`/user-tasks/${userTaskKey}/form`);
+}
+
+export async function completeUserTask(
+  userTaskKey: string,
+  variables: Record<string, unknown>
+): Promise<void> {
+  await camundaFetch<null>(`/user-tasks/${userTaskKey}/completion`, {
+    method: 'POST',
+    body: JSON.stringify({ variables }),
+  });
+}
+
+export async function getProcessInstanceVariables(
+  processInstanceKey: string
+): Promise<Record<string, unknown>> {
+  const result = await camundaFetch<{ items: Array<{ name: string; value: string }> }>(
+    '/variables/search',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        filter: { processInstanceKey },
+        page: { limit: 100 },
+      }),
+    }
+  );
+  return Object.fromEntries(
+    result.items.map(({ name, value }) => {
+      try {
+        return [name, JSON.parse(value)];
+      } catch {
+        return [name, value];
+      }
+    })
+  );
+}
+
+export async function getProcessInstanceState(
+  processInstanceKey: string
+): Promise<ProcessInstanceState | null> {
+  const result = await camundaFetch<{ items: ProcessInstanceState[] }>(
+    '/process-instances/search',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        filter: { processInstanceKey },
+        page: { limit: 1 },
+      }),
+    }
+  );
+  return result.items[0] ?? null;
 }

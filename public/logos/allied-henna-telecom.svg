@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 80" fill="none">
+  <!-- Shield mark -->
+  <path d="M20 8 L20 46 Q20 62 36 70 Q52 62 52 46 L52 8 Z" fill="#0D3B6E"/>
+  <path d="M26 14 L26 45 Q26 57 36 64 Q46 57 46 45 L46 14 Z" fill="none" stroke="#00A8E0" stroke-width="1.5"/>
+  <!-- Signal / broadcast arcs inside shield -->
+  <circle cx="36" cy="46" r="2.5" fill="#00A8E0"/>
+  <path d="M29 42 Q36 34 43 42" fill="none" stroke="#00A8E0" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M25 37 Q36 26 47 37" fill="none" stroke="#00A8E0" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Wordmark -->
+  <text x="68" y="34" font-family="Georgia, serif" font-size="20" font-weight="700" fill="#0D3B6E" letter-spacing="1">ALLIED HENNA</text>
+  <text x="69" y="52" font-family="Arial, sans-serif" font-size="9.5" font-weight="400" fill="#00A8E0" letter-spacing="3.5">TELECOM</text>
+
+  <!-- Tagline rule + text -->
+  <line x1="68" y1="59" x2="340" y2="59" stroke="#00A8E0" stroke-width="0.8"/>
+  <text x="69" y="71" font-family="Arial, sans-serif" font-size="7.5" font-weight="300" fill="#6B7A8D" letter-spacing="1.8">KEEPING EUROPE CONNECTED · FIELD SUPPORT SERVICES</text>
+</svg>

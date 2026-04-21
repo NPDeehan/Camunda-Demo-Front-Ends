@@ -7,10 +7,11 @@ export default function DemoSuccessPage() {
   return (
     <div className="demo-success">
       <div className="success-icon">&#10003;</div>
-      <h2>Process Started</h2>
+      <h2>{config?.taskLoop?.successTitle ?? 'Process Started'}</h2>
       <p>
-        A new instance of <strong>{config?.title}</strong> has been started
-        successfully.
+        {config?.taskLoop?.successMessage ?? (
+          <>A new instance of <strong>{config?.title}</strong> has been started successfully.</>
+        )}
       </p>
       <div className="success-actions">
         <Link to={`/${config?.id}`} className="btn btn-primary">
