@@ -55,28 +55,30 @@ app.all('/api/*path', async (req, res) => {
     if (['GET', 'HEAD'].includes(req.method)) {
       body = undefined;
     } else if (isMultipart) {
-      // Preserve Content-Type including the multipart boundary
       headers['Content-Type'] = contentType;
-      // Stream the raw request body — express.json() does not consume multipart
       body = Readable.toWeb(req) as ReadableStream<Uint8Array>;
     } else {
       headers['Content-Type'] = 'application/json';
       body = JSON.stringify(req.body);
     }
 
-    const upstream = await fetch(`${CAMUNDA_BASE_URL}${camundaPath}`, {
+    const upstream = await fetch(`${CAMUNDA_BASE_URL.replace(/\/$/, '')}${camundaPath}`, {
       method: req.method,
       headers,
       body,
-      // Required by Node.js fetch when body is a ReadableStream
       // @ts-expect-error not in RequestInit types yet
       duplex: 'half',
     });
 
     res.status(upstream.status);
     if (upstream.status === 204) return res.end();
-    const responseBody = await upstream.json();
-    res.json(responseBody);
+    const text = await upstream.text();
+    if (!text) return res.end();
+    try {
+      res.json(JSON.parse(text));
+    } catch {
+      res.type('text/plain').send(text);
+    }
   } catch (err) {
     console.error('Proxy error:', err);
     res.status(502).json({ error: (err as Error).message });

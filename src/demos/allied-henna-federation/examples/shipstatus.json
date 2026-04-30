@@ -1,0 +1,42 @@
+{
+  "ship": {
+    "name": "The Rocinante",
+    "class": "Gun Ship",
+    "status": "operational"
+  },
+  "systems": {
+    "hull_integrity": 100,
+    "shields": 100,
+    "engine_power": 100,
+    "life_support": 100,
+    "weapons_online": true,
+    "shields_online": false
+  },
+  "navigation": {
+    "current_location": "Earth",
+    "destination": "",
+    "speed_km_s": 0,
+    "eta_hours": 0
+  },
+  "crew": {
+    "total": 12,
+    "active": 12,
+    "injured": 0,
+    "inactive_but_healthy":  0
+  },
+  "cargo": {
+    "capacity_tons": 500,
+    "used_tons": 318,
+    "manifest": [
+      { "item": "Titanium Ore", "tons": 200 },
+      { "item": "Medical Supplies", "tons": 80 },
+      { "item": "Food Rations", "tons": 38 }
+    ]
+  },
+  "fuel": {
+    "current_percent": 100
+  },
+  "alerts": [
+    { "level": "info", "message": "Scheduled maintenance due in 48h" }
+  ]
+}

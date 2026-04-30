@@ -141,3 +141,80 @@ export async function getProcessInstanceState(
   );
   return result.items[0] ?? null;
 }
+
+export interface ActiveProcessInstance {
+  processInstanceKey: string;
+  startDate?: string;
+}
+
+export interface AgentContextMessage {
+  role: string;
+  content?: Array<{ type: string; text?: string }>;
+}
+
+export interface AgentContext {
+  state?: string;
+  conversation?: {
+    messages?: AgentContextMessage[];
+  };
+}
+
+export async function getAgentContext(
+  processInstanceKey: string
+): Promise<AgentContext | null> {
+  const result = await camundaFetch<{
+    items: Array<{ name: string; value: string; variableKey: string; isTruncated?: boolean }>;
+  }>('/variables/search', {
+    method: 'POST',
+    body: JSON.stringify({
+      filter: { processInstanceKey, name: 'agentContext' },
+      page: { limit: 1 },
+    }),
+  });
+
+  const item = result.items[0];
+  if (!item) return null;
+
+  let rawValue = item.value;
+
+  if (item.isTruncated) {
+    const full = await camundaFetch<{ value: string }>(`/variables/${item.variableKey}`);
+    rawValue = full.value;
+  }
+
+  try {
+    return JSON.parse(rawValue) as AgentContext;
+  } catch {
+    return null;
+  }
+}
+
+export async function countActiveUserTasksForProcess(
+  bpmnProcessId: string
+): Promise<number> {
+  const processDefinitionKey = await getProcessDefinitionKey(bpmnProcessId);
+  const result = await camundaFetch<{ items: unknown[] }>('/user-tasks/search', {
+    method: 'POST',
+    body: JSON.stringify({
+      filter: { processDefinitionKey, state: 'CREATED' },
+      page: { limit: 100 },
+    }),
+  });
+  return result.items.length;
+}
+
+export async function listActiveProcessInstances(
+  processDefinitionId: string
+): Promise<ActiveProcessInstance[]> {
+  const result = await camundaFetch<{ items: ActiveProcessInstance[] }>(
+    '/process-instances/search',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        filter: { processDefinitionId, state: 'ACTIVE' },
+        page: { limit: 50 },
+      }),
+    }
+  );
+  return result.items;
+}

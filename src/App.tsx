@@ -7,6 +7,7 @@ import DemoSuccessPage from './pages/DemoSuccessPage';
 import DemoTaskLoopPage from './pages/DemoTaskLoopPage';
 import DemoCustomPage from './pages/DemoCustomPage';
 import NotFound from './pages/NotFound';
+import DebugPage from './pages/DebugPage';
 import './styles/global.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path="tasks" element={<DemoTaskLoopPage />} />
             <Route path=":pageSlug" element={<DemoCustomPage />} />
           </Route>
+          <Route path="debug" element={<DebugPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

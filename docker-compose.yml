@@ -1,0 +1,17 @@
+services:
+  proxy:
+    build:
+      context: .
+      target: proxy
+    env_file: .env
+    ports:
+      - "3001:3001"
+
+  frontend:
+    build:
+      context: .
+      target: frontend
+    ports:
+      - "8091:80"
+    depends_on:
+      - proxy
