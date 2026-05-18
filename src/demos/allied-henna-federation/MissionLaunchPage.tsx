@@ -159,17 +159,17 @@ function Gauge({ label, value }: { label: string; value: number }) {
   );
 }
 
-function FuelBar({ value }: { value: number }) {
-  const cls = value >= 80 ? 'good' : value >= 50 ? 'warn' : 'crit';
-  return (
-    <div className="mlp-fuel-bar-wrap">
-      <div className="mlp-fuel-bar-track">
-        <div className={`mlp-fuel-bar-fill mlp-fuel-bar-fill--${cls}`} style={{ height: `${value}%` }} />
-      </div>
-      <span className={`mlp-fuel-bar-label mlp-gauge-value--${cls}`}>{value}%</span>
-    </div>
-  );
-}
+// function FuelBar({ value }: { value: number }) {
+//   const cls = value >= 80 ? 'good' : value >= 50 ? 'warn' : 'crit';
+//   return (
+//     <div className="mlp-fuel-bar-wrap">
+//       <div className="mlp-fuel-bar-track">
+//         <div className={`mlp-fuel-bar-fill mlp-fuel-bar-fill--${cls}`} style={{ height: `${value}%` }} />
+//       </div>
+//       <span className={`mlp-fuel-bar-label mlp-gauge-value--${cls}`}>{value}%</span>
+//     </div>
+//   );
+// }
 
 function ConsolePanel({ title, children }: { title: string; children: React.ReactNode }) {
   return (

@@ -8,18 +8,13 @@ A React + TypeScript + Vite application that provides a self-service demo hub fo
 
 ### Prerequisites
 
-- Node.js 18+
 - A Camunda 8 cluster (SaaS or Self-Managed) with at least one deployed process
-
-### Install dependencies
-
-```bash
-npm install
-```
+- For local development: Node.js 18+
+- For containerized deployment: Docker (with Compose)
 
 ### Configure environment
 
-Copy `.env.example` to `.env` and fill in your cluster details:
+Copy `.env.example` to `.env` and fill in your cluster details. The same `.env` is used by both run modes.
 
 ```bash
 cp .env.example .env
@@ -33,7 +28,34 @@ cp .env.example .env
 | `CAMUNDA_CLIENT_SECRET` | Client secret from Camunda Console |
 | `CAMUNDA_TOKEN_AUDIENCE` | Token audience (default: `zeebe.camunda.io`) |
 
-### Run the application
+You can run the hub two ways: as containers via Docker Compose (one command, recommended), or locally with npm for active development. Both pick up the same `.env`.
+
+---
+
+## Running the app
+
+### Option A — Docker Compose
+
+With your `.env` in place, build and start both services:
+
+```bash
+docker compose up --build
+```
+
+This brings up:
+
+- `proxy` on port 3001 — Node + tsx, reads `.env` for Camunda credentials
+- `frontend` on port 8091 — production Vite build served by nginx, forwards `/api` to the proxy
+
+Open [http://localhost:8091](http://localhost:8091) in your browser.
+
+### Option B — Local dev (npm)
+
+Install dependencies:
+
+```bash
+npm install
+```
 
 The app needs two processes running side-by-side: the Vite dev server and the authentication proxy.
 
@@ -99,13 +121,11 @@ The demo is automatically discovered at startup — no import or registration st
 
 Ensure the process whose `bpmnProcessId` matches `processId` above is deployed and has a start event with a linked **Camunda Form**. The proxy fetches that form schema at runtime and renders it automatically.
 
-The demo will appear on the hub at `http://localhost:5173` and be accessible at `http://localhost:5173/my-new-process`.
+The demo will appear on the hub at the frontend URL (`http://localhost:8091` in Docker mode, `http://localhost:5173` in npm mode) and be accessible at `/my-new-process`.
 
----
+### Optional config features
 
-## Optional config features
-
-### Hardcoded form schema (skip the API fetch)
+#### Hardcoded form schema (skip the API fetch)
 
 If you want to embed the form schema in the front end instead of fetching it from Camunda, provide it directly:
 
@@ -122,7 +142,7 @@ const config: DemoConfig = {
 
 Place your exported Camunda form JSON as `src/demos/my-new-process/form.json`.
 
-### Static variables
+#### Static variables
 
 Variables that should always be merged into the submission payload (e.g. a `source` tag or a fixed account ID) can be declared without appearing in the form:
 
@@ -138,7 +158,7 @@ const config: DemoConfig = {
 
 These are merged with the form data before the process instance is started (form data takes precedence on key conflicts).
 
-### Custom form page
+#### Custom form page
 
 If the standard form renderer is not sufficient you can provide your own React component:
 
@@ -174,7 +194,7 @@ export default function MyCustomForm({ config, onSubmit }: CustomFormPageProps) 
 
 When `customFormPage` is set, `formSchema` is ignored.
 
-### Additional pages
+#### Additional pages
 
 Extra pages rendered under the demo route (e.g. a status tracker) can be added via the `pages` array:
 
@@ -198,7 +218,9 @@ Each page is accessible at `/:demoId/:path`, e.g. `/my-new-process/status`.
 
 ---
 
-## Project structure
+## Reference
+
+### Project structure
 
 ```
 src/
@@ -224,9 +246,7 @@ server/
   proxy.ts                # Express proxy — handles OAuth and forwards to Camunda
 ```
 
----
-
-## Available scripts
+### Available npm scripts
 
 | Command | Description |
 |---|---|
@@ -235,66 +255,3 @@ server/
 | `npm run build` | Type-check and build for production |
 | `npm run preview` | Preview the production build locally |
 | `npm run lint` | Run ESLint |
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
