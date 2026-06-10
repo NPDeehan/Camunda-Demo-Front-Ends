@@ -7,7 +7,9 @@
       "WebFetch(domain:docs.camunda.io)",
       "WebFetch(domain:forum.camunda.io)",
       "Bash(npm install *)",
-      "Bash(docker compose *)"
+      "Bash(docker compose *)",
+      "Bash(bun build *)",
+      "Bash(bun --version)"
     ],
     "additionalDirectories": [
       "c:\\Users\\NiallDeehan\\Documents\\GitHub\\Camunda-Demo-Front-Ends\\.claude"

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="12" fill="#F4F6FA"/>
+  <!-- Shield body -->
+  <path d="M10 8 L10 40 Q10 54 32 62 Q54 54 54 40 L54 8 Z" fill="#1B3A6B"/>
+  <!-- Inner gold border -->
+  <path d="M16 14 L16 39 Q16 50 32 57 Q48 50 48 39 L48 14 Z" fill="none" stroke="#C9971C" stroke-width="2"/>
+  <!-- AH monogram -->
+  <text x="19" y="46" font-family="Georgia, serif" font-size="22" font-weight="700" fill="#C9971C" letter-spacing="-1">AH</text>
+</svg>

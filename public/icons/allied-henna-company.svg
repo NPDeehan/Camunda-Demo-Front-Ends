@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
+  <defs>
+    <radialGradient id="comp-shield-grad" cx="50%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#00277A"/>
+      <stop offset="100%" stop-color="#00093A"/>
+    </radialGradient>
+    <filter id="comp-star-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- EU-style 5-pointed star, pointing up, outer r=7, inner r=2.8 -->
+    <polygon id="eu-star"
+      points="0,-7 1.65,-2.27 6.66,-2.16 2.66,0.87 4.11,5.66 0,2.8 -4.11,5.66 -2.66,0.87 -6.66,-2.16 -1.65,-2.27"/>
+  </defs>
+
+  <!-- EU blue background -->
+  <rect width="512" height="512" rx="76" fill="#003399"/>
+  <!-- Gold outer border -->
+  <rect width="512" height="512" rx="76" fill="none" stroke="#FFCC00" stroke-width="3.5" opacity="0.4"/>
+
+  <!-- 12 EU-style stars in a ring at radius 218 from centre (256,256) -->
+  <use href="#eu-star" transform="translate(256,38)"  fill="#FFCC00" opacity="0.85"/>
+  <use href="#eu-star" transform="translate(365,67)"  fill="#FFCC00" opacity="0.85"/>
+  <use href="#eu-star" transform="translate(445,147)" fill="#FFCC00" opacity="0.85"/>
+  <use href="#eu-star" transform="translate(474,256)" fill="#FFCC00" opacity="0.85"/>
+  <use href="#eu-star" transform="translate(445,365)" fill="#FFCC00" opacity="0.85"/>
+  <use href="#eu-star" transform="translate(365,445)" fill="#FFCC00" opacity="0.85"/>
+  <use href="#eu-star" transform="translate(256,474)" fill="#FFCC00" opacity="0.85"/>
+  <use href="#eu-star" transform="translate(147,445)" fill="#FFCC00" opacity="0.85"/>
+  <use href="#eu-star" transform="translate(67,365)"  fill="#FFCC00" opacity="0.85"/>
+  <use href="#eu-star" transform="translate(38,256)"  fill="#FFCC00" opacity="0.85"/>
+  <use href="#eu-star" transform="translate(67,147)"  fill="#FFCC00" opacity="0.85"/>
+  <use href="#eu-star" transform="translate(147,67)"  fill="#FFCC00" opacity="0.85"/>
+
+  <!-- Shield body with dark navy gradient -->
+  <path d="M144,110 L144,308 Q144,420 256,450 Q368,420 368,308 L368,110 Z"
+        fill="url(#comp-shield-grad)"/>
+  <!-- Gold shield border -->
+  <path d="M157,123 L157,305 Q157,406 256,434 Q355,406 355,305 L355,123 Z"
+        fill="none" stroke="#FFCC00" stroke-width="3.5"/>
+
+  <!-- Large central star — glow layer -->
+  <!-- Outer R=48, inner r=19.2, centred at (256,208) -->
+  <polygon
+    points="256,160 267.29,192.47 301.65,193.17 274.26,213.93 284.21,246.83 256,227.2 227.79,246.83 237.74,213.93 210.35,193.17 244.71,192.47"
+    fill="#FFCC00" opacity="0.35" filter="url(#comp-star-glow)"/>
+  <!-- Large central star — solid -->
+  <polygon
+    points="256,160 267.29,192.47 301.65,193.17 274.26,213.93 284.21,246.83 256,227.2 227.79,246.83 237.74,213.93 210.35,193.17 244.71,192.47"
+    fill="#FFCC00"/>
+
+  <!-- Divider between star and monogram -->
+  <line x1="190" y1="263" x2="322" y2="263" stroke="#FFCC00" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- AH monogram -->
+  <text x="256" y="382"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="115" font-weight="700" fill="#FFCC00" letter-spacing="-3">AH</text>
+
+  <!-- Bottom accent line -->
+  <line x1="190" y1="400" x2="322" y2="400" stroke="#FFCC00" stroke-width="1.5" opacity="0.4"/>
+</svg>

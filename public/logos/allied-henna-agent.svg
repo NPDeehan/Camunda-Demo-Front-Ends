@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="50" fill="#003399"/>
+  <defs>
+    <polygon id="s" points="0,-5 -1.176,-1.618 -4.755,-1.545 -1.902,0.618 -2.939,4.045 0,2 2.939,4.045 1.902,0.618 4.755,-1.545 1.176,-1.618" fill="#FFCC00"/>
+  </defs>
+  <use href="#s" transform="translate(50,15)"/>
+  <use href="#s" transform="translate(32.5,19.7)"/>
+  <use href="#s" transform="translate(19.7,32.5)"/>
+  <use href="#s" transform="translate(15,50)"/>
+  <use href="#s" transform="translate(19.7,67.5)"/>
+  <use href="#s" transform="translate(32.5,80.3)"/>
+  <use href="#s" transform="translate(50,85)"/>
+  <use href="#s" transform="translate(67.5,80.3)"/>
+  <use href="#s" transform="translate(80.3,67.5)"/>
+  <use href="#s" transform="translate(85,50)"/>
+  <use href="#s" transform="translate(80.3,32.5)"/>
+  <use href="#s" transform="translate(67.5,19.7)"/>
+  <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-size="20" font-weight="bold" font-family="Georgia,'Times New Roman',serif" fill="#FFCC00" letter-spacing="2">AH</text>
+</svg>

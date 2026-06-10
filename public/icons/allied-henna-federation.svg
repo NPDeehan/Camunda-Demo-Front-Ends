@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <radialGradient id="fed-bg" cx="45%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#0D2248"/>
+      <stop offset="100%" stop-color="#010508"/>
+    </radialGradient>
+    <filter id="fed-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Space background circle -->
+  <circle cx="32" cy="32" r="32" fill="url(#fed-bg)"/>
+  <!-- Outer ring -->
+  <circle cx="32" cy="32" r="30" stroke="#00C8FF" stroke-width="1.5"/>
+  <!-- Inner decorative ring -->
+  <circle cx="32" cy="32" r="24" stroke="#00C8FF" stroke-width="0.5" opacity="0.3"/>
+  <!-- Cardinal tick marks -->
+  <line x1="32" y1="2"  x2="32" y2="7"  stroke="#00C8FF" stroke-width="1.5" opacity="0.9"/>
+  <line x1="32" y1="57" x2="32" y2="62" stroke="#00C8FF" stroke-width="1.5" opacity="0.9"/>
+  <line x1="2"  y1="32" x2="7"  y2="32" stroke="#00C8FF" stroke-width="1.5" opacity="0.9"/>
+  <line x1="57" y1="32" x2="62" y2="32" stroke="#00C8FF" stroke-width="1.5" opacity="0.9"/>
+  <!-- Stars -->
+  <circle cx="9"  cy="12" r="0.9" fill="white" opacity="0.9"/>
+  <circle cx="55" cy="10" r="1"   fill="white" opacity="0.7"/>
+  <circle cx="6"  cy="28" r="0.7" fill="white" opacity="0.8"/>
+  <circle cx="58" cy="23" r="0.8" fill="white" opacity="0.6"/>
+  <circle cx="49" cy="6"  r="1"   fill="white" opacity="0.8"/>
+  <circle cx="15" cy="53" r="0.8" fill="white" opacity="0.7"/>
+  <circle cx="55" cy="50" r="0.8" fill="white" opacity="0.9"/>
+  <!-- Ship hull -->
+  <path d="M32,16 C35,22 37,28 37,36 L32,39 L27,36 C27,28 29,22 32,16 Z"
+        fill="#0C2D5E" stroke="#00C8FF" stroke-width="1" filter="url(#fed-glow)"/>
+  <!-- Hull inner highlight -->
+  <path d="M32,18 C34,23 35,28 35,33 L32,36 L29,33 C29,28 30,23 32,18 Z"
+        fill="#1A4A8C" opacity="0.6"/>
+  <!-- Cockpit window -->
+  <ellipse cx="32" cy="25" rx="2.5" ry="3.5" fill="#00C8FF" opacity="0.3"/>
+  <!-- Nose tip glow -->
+  <circle cx="32" cy="17" r="2.5" fill="#00C8FF" filter="url(#fed-glow)" opacity="0.9"/>
+  <!-- Wing fins -->
+  <path d="M27,36 L20,44 L27,40 Z" fill="#091E40" stroke="#00C8FF" stroke-width="0.8"/>
+  <path d="M37,36 L44,44 L37,40 Z" fill="#091E40" stroke="#00C8FF" stroke-width="0.8"/>
+  <!-- Engine exhaust -->
+  <path d="M29,39 Q32,47 35,39" fill="#6B1FCE" opacity="0.8" filter="url(#fed-glow)"/>
+  <!-- Orbital ring -->
+  <ellipse cx="32" cy="30" rx="18" ry="6" fill="none" stroke="#00C8FF" stroke-width="0.8"
+           opacity="0.5" transform="rotate(-22 32 30)"/>
+  <!-- Orbiting dot -->
+  <circle cx="20" cy="26" r="2" fill="#00C8FF" filter="url(#fed-glow)"/>
+</svg>

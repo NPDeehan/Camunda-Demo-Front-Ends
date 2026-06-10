@@ -1,0 +1,54 @@
+{
+  "name": "Allied Henna Icon Set",
+  "description": "Square emblem icons for all Allied Henna brand variants. Scalable SVG.",
+  "baseUrl": "/icons/",
+  "icons": [
+    {
+      "id": "company",
+      "name": "Allied Henna (Company)",
+      "file": "allied-henna-company.svg",
+      "primaryColor": "#003399",
+      "accentColor": "#FFCC00",
+      "background": "#003399",
+      "theme": "european",
+      "size": "512x512",
+      "notes": "Company-wide icon. EU blue + gold, shield with AH monogram, central star, ring of 12 EU-style stars."
+    },
+    {
+      "id": "bank",
+      "name": "Allied Henna Bank",
+      "file": "allied-henna-bank.svg",
+      "primaryColor": "#1B3A6B",
+      "accentColor": "#C9971C",
+      "background": "#F4F6FA",
+      "theme": "navy-gold"
+    },
+    {
+      "id": "insurance",
+      "name": "Allied Henna Insurance",
+      "file": "allied-henna-insurance.svg",
+      "primaryColor": "#1B3A6B",
+      "accentColor": "#C9971C",
+      "background": "#F4F6FA",
+      "theme": "navy-gold"
+    },
+    {
+      "id": "telecom",
+      "name": "Allied Henna Telecom",
+      "file": "allied-henna-telecom.svg",
+      "primaryColor": "#0D3B6E",
+      "accentColor": "#00A8E0",
+      "background": "#F0F6FC",
+      "theme": "blue-cyan"
+    },
+    {
+      "id": "federation",
+      "name": "Allied Henna Federation",
+      "file": "allied-henna-federation.svg",
+      "primaryColor": "#0A1628",
+      "accentColor": "#00C8FF",
+      "background": "#02060F",
+      "theme": "space"
+    }
+  ]
+}

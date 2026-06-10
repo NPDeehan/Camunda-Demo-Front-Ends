@@ -126,6 +126,60 @@ export async function getProcessInstanceVariables(
   );
 }
 
+export async function getUserTaskVariable(
+  userTaskKey: string,
+  variableName: string,
+): Promise<unknown> {
+  const result = await camundaFetch<{
+    items: Array<{ name: string; value: string; variableKey: string; isTruncated?: boolean }>;
+  }>(`/user-tasks/${userTaskKey}/variables`);
+
+  const item = result.items.find(v => v.name === variableName);
+  if (!item) return undefined;
+
+  let rawValue = item.value;
+  if (item.isTruncated) {
+    const full = await camundaFetch<{ value: string }>(`/variables/${item.variableKey}`);
+    rawValue = full.value;
+  }
+
+  try {
+    return JSON.parse(rawValue);
+  } catch {
+    return rawValue;
+  }
+}
+
+export async function getProcessInstanceVariable(
+  processInstanceKey: string,
+  variableName: string,
+): Promise<unknown> {
+  const result = await camundaFetch<{
+    items: Array<{ name: string; value: string; variableKey: string; isTruncated?: boolean }>;
+  }>('/variables/search', {
+    method: 'POST',
+    body: JSON.stringify({
+      filter: { processInstanceKey, name: variableName },
+      page: { limit: 1 },
+    }),
+  });
+
+  const item = result.items[0];
+  if (!item) return undefined;
+
+  let rawValue = item.value;
+  if (item.isTruncated) {
+    const full = await camundaFetch<{ value: string }>(`/variables/${item.variableKey}`);
+    rawValue = full.value;
+  }
+
+  try {
+    return JSON.parse(rawValue);
+  } catch {
+    return rawValue;
+  }
+}
+
 export async function getProcessInstanceState(
   processInstanceKey: string
 ): Promise<ProcessInstanceState | null> {

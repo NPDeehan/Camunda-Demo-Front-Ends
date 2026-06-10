@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="12" fill="#F0F6FC"/>
+  <!-- Shield body -->
+  <path d="M10 8 L10 40 Q10 54 32 62 Q54 54 54 40 L54 8 Z" fill="#0D3B6E"/>
+  <!-- Inner cyan border -->
+  <path d="M16 14 L16 39 Q16 50 32 57 Q48 50 48 39 L48 14 Z" fill="none" stroke="#00A8E0" stroke-width="2"/>
+  <!-- Signal broadcast dot -->
+  <circle cx="32" cy="46" r="4" fill="#00A8E0"/>
+  <!-- Signal arc 1 -->
+  <path d="M23 38 Q32 28 41 38" fill="none" stroke="#00A8E0" stroke-width="3" stroke-linecap="round"/>
+  <!-- Signal arc 2 (fainter) -->
+  <path d="M16 31 Q32 17 48 31" fill="none" stroke="#00A8E0" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+</svg>
