@@ -132,9 +132,15 @@ export async function getUserTaskVariable(
 ): Promise<unknown> {
   const result = await camundaFetch<{
     items: Array<{ name: string; value: string; variableKey: string; isTruncated?: boolean }>;
-  }>(`/user-tasks/${userTaskKey}/variables`);
+  }>(`/user-tasks/${userTaskKey}/effective-variables/search`, {
+    method: 'POST',
+    body: JSON.stringify({
+      filter: { name: variableName },
+      page: { limit: 1 },
+    }),
+  });
 
-  const item = result.items.find(v => v.name === variableName);
+  const item = result.items[0];
   if (!item) return undefined;
 
   let rawValue = item.value;

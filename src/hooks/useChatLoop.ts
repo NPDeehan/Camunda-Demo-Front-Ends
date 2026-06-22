@@ -36,7 +36,6 @@ export function useChatLoop(processInstanceKey: string, config: ChatLoopConfig) 
   const activeRef = useRef(true);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasSeenActiveRef = useRef(false);
-  // Guard: track task keys we've already surfaced so we never re-show them
   const seenTaskKeysRef = useRef<Set<string>>(new Set());
 
   const clearTimer = () => {
@@ -60,11 +59,20 @@ export function useChatLoop(processInstanceKey: string, config: ChatLoopConfig) 
         const raw = await getUserTaskVariable(task.userTaskKey, answerVariable);
         if (!activeRef.current) return;
 
-        const answer = typeof raw === 'string' ? raw : JSON.stringify(raw ?? '');
+        const answer = typeof raw === 'string' ? raw : (raw != null ? JSON.stringify(raw) : null);
+
+        if (!answer) {
+          seenTaskKeysRef.current.delete(task.userTaskKey);
+          timerRef.current = setTimeout(poll, pollIntervalMs);
+          return;
+        }
 
         setActiveTaskKey(task.userTaskKey);
         setMessages(prev => [...prev, { role: 'agent', content: answer }]);
         setStatus('agent-replied');
+        // Keep polling so we detect process termination while waiting for user input.
+        // seenTaskKeysRef prevents re-displaying this task.
+        timerRef.current = setTimeout(poll, pollIntervalMs * 3);
         return;
       }
 
