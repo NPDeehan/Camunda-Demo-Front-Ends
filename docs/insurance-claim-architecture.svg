@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 740" width="1280" height="740" role="img" aria-labelledby="d-title d-desc" font-family="-apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="d-title">Insurance claim architecture</title>
+<desc id="d-desc">The claim page loads its start form from Camunda through the auth proxy, uploads any attached documents, then starts an InsuranceClaimValidationAgent process instance and shows a confirmation card without waiting for a decision. The process then validates and decides the claim on its own.</desc>
+<defs>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#003399"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0891b2"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker>
+<marker id="a-slate" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+<marker id="a-orange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fc5d0d"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97706"/></marker>
+<marker id="a-navy" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1B3A6B"/></marker>
+<marker id="a-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+<marker id="a-sky" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+</defs>
+<rect x="0.5" y="0.5" width="1279" height="739" rx="16" fill="#ffffff" stroke="#e2e8f0"/>
+<text x="40" y="50" font-size="24" font-weight="700" fill="#0f172a">Insurance claim — from the page to Camunda</text>
+<text x="40" y="76" font-size="14" fill="#475569">A start-form demo: the claimant submits once, then the process carries on by itself</text>
+<rect x="40" y="104" width="440" height="440" rx="14" fill="#f4f6fa" stroke="#1B3A6B" stroke-width="2"/>
+<text x="60" y="132" font-size="11" font-weight="700" fill="#1B3A6B" letter-spacing="0.08em">CLAIMANT'S BROWSER</text>
+<text x="60" y="154" font-size="16" font-weight="700" fill="#0f172a">Insurance claim page</text>
+<rect x="60" y="168" width="400" height="70" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="76" y="190" font-size="12.5" font-weight="700" fill="#475569">Landing page content</text>
+<text x="76" y="208" font-size="11.5" fill="#64748b">Hero, features, reviews, trust bar</text>
+<text x="76" y="224" font-size="11.5" fill="#64748b">Static — makes no Camunda calls</text>
+<rect x="60" y="252" width="400" height="138" rx="9" fill="#ffffff" stroke="#1B3A6B" stroke-width="1.5"/>
+<text x="76" y="274" font-size="13" font-weight="700" fill="#1B3A6B">Claim form</text>
+<text x="76" y="294" font-size="11.5" fill="#475569">Fields come from the start form defined in</text>
+<text x="76" y="311" font-size="11.5" fill="#475569">Camunda — fetched on page load, not hard-coded</text>
+<text x="76" y="328" font-size="11.5" fill="#475569">Rendered by form-js (CamundaFormRenderer)</text>
+<text x="76" y="345" font-size="11.5" fill="#475569">Attached files are uploaded first and replaced</text>
+<text x="76" y="362" font-size="11.5" fill="#475569">by document references in the submitted data</text>
+<path d="M260,390 V414" stroke="#1B3A6B" stroke-width="2" fill="none" marker-end="url(#a-navy)"/>
+<text x="272" y="406" font-size="10.5" fill="#1B3A6B">on submit</text>
+<rect x="60" y="416" width="400" height="112" rx="9" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+<text x="76" y="438" font-size="13" font-weight="700" fill="#166534">Confirmation card (flips in)</text>
+<text x="76" y="458" font-size="11.5" fill="#475569">Claim submitted ✓ → Assessment &amp; validation →</text>
+<text x="76" y="474" font-size="11.5" fill="#475569">Settlement authorised</text>
+<text x="76" y="500" font-size="11.5" fill="#475569">Shown once the process has started — the</text>
+<text x="76" y="516" font-size="11.5" fill="#475569">page never waits for a decision</text>
+<rect x="540" y="104" width="190" height="440" rx="14" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+<text x="560" y="132" font-size="11" font-weight="700" fill="#475569" letter-spacing="0.08em">AUTH PROXY</text>
+<text x="560" y="154" font-size="13" font-weight="700" fill="#0f172a">Express · port 3001</text>
+<text x="560" y="190" font-size="11.5" fill="#475569">Keeps the Camunda</text>
+<text x="560" y="206" font-size="11.5" fill="#475569">credentials server-side,</text>
+<text x="560" y="222" font-size="11.5" fill="#475569">so the browser never</text>
+<text x="560" y="238" font-size="11.5" fill="#475569">sees them</text>
+<text x="560" y="276" font-size="11.5" fill="#475569">Gets an OAuth token and</text>
+<text x="560" y="292" font-size="11.5" fill="#475569">caches it</text>
+<text x="560" y="330" font-size="11.5" fill="#475569">Streams the document</text>
+<text x="560" y="346" font-size="11.5" fill="#475569">uploads straight through</text>
+<rect x="790" y="104" width="450" height="566" rx="14" fill="#fff7ed" stroke="#fc5d0d" stroke-width="2"/>
+<text x="810" y="132" font-size="11" font-weight="700" fill="#c2410c" letter-spacing="0.08em">CAMUNDA 8 CLUSTER</text>
+<text x="810" y="152" font-size="13" font-weight="700" fill="#0f172a">Orchestration Cluster REST API (v2)</text>
+<rect x="800" y="164" width="430" height="198" rx="10" fill="#ffffff" stroke="#fdba74" stroke-width="1"/>
+<rect x="812" y="174" width="406" height="40" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1"/>
+<circle cx="832" cy="194" r="10" fill="#1B3A6B" stroke="none" stroke-width="1"/><text x="832" y="198.5" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+<text x="852" y="191" font-size="11.5" font-weight="700" fill="#0f172a" font-family="Consolas, Monaco, monospace">POST /process-definitions/search</text>
+<text x="852" y="206" font-size="11" fill="#64748b">find the latest version of the process</text>
+<rect x="812" y="220" width="406" height="40" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1"/>
+<circle cx="832" cy="240" r="10" fill="#1B3A6B" stroke="none" stroke-width="1"/><text x="832" y="244.5" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+<text x="852" y="237" font-size="11.5" font-weight="700" fill="#0f172a" font-family="Consolas, Monaco, monospace">GET /process-definitions/{key}/form</text>
+<text x="852" y="252" font-size="11" fill="#64748b">the start form (defined in Camunda)</text>
+<rect x="812" y="266" width="406" height="40" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1"/>
+<circle cx="832" cy="286" r="10" fill="#1B3A6B" stroke="none" stroke-width="1"/><text x="832" y="290.5" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+<text x="852" y="283" font-size="11.5" font-weight="700" fill="#0f172a" font-family="Consolas, Monaco, monospace">POST /documents</text>
+<text x="852" y="298" font-size="11" fill="#64748b">store each attached file</text>
+<rect x="812" y="312" width="406" height="40" rx="8" fill="#fff7ed" stroke="#fed7aa" stroke-width="1"/>
+<circle cx="832" cy="332" r="10" fill="#1B3A6B" stroke="none" stroke-width="1"/><text x="832" y="336.5" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+<text x="852" y="329" font-size="11.5" font-weight="700" fill="#0f172a" font-family="Consolas, Monaco, monospace">POST /process-instances</text>
+<text x="852" y="344" font-size="11" fill="#64748b">start a claim with the form data</text>
+<path d="M1015,362 V392" stroke="#fc5d0d" stroke-width="2.5" fill="none" marker-end="url(#a-orange)"/>
+<text x="1027" y="382" font-size="11" fill="#c2410c">starts</text>
+<rect x="800" y="392" width="430" height="252" rx="10" fill="#ffffff" stroke="#fdba74" stroke-width="1"/>
+<text x="820" y="418" font-size="14" font-weight="700" fill="#0f172a">InsuranceClaimValidationAgent</text>
+<text x="820" y="436" font-size="12" fill="#64748b">BPMN process in Camunda</text>
+<circle cx="836" cy="500" r="14" fill="#ffffff" stroke="#475569" stroke-width="2"/>
+<path d="M851,500 H868" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#a-slate)"/>
+<rect x="870" y="470" width="124" height="60" rx="10" fill="#f5f3ff" stroke="#a56eff" stroke-width="1.5"/>
+<text x="932" y="497" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">AI-assisted</text>
+<text x="932" y="513" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">validation</text>
+<path d="M994,500 H1012" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#a-slate)"/>
+<rect x="1014" y="470" width="124" height="60" rx="10" fill="#f5f3ff" stroke="#a56eff" stroke-width="1.5"/>
+<text x="1076" y="497" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">Decision &amp;</text>
+<text x="1076" y="513" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">settlement</text>
+<path d="M1138,500 H1158" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#a-slate)"/>
+<circle cx="1174" cy="500" r="14" fill="#ffffff" stroke="#475569" stroke-width="4"/>
+<path d="M1076,530 V552" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#a-slate)" stroke-dasharray="5 4"/>
+<rect x="966" y="554" width="220" height="30" rx="15" fill="#fffbeb" stroke="#C9971C" stroke-width="1.3"/>
+<text x="1076" y="574" font-size="11.5" fill="#0f172a" text-anchor="middle">✉ Status emails to the claimant</text>
+<text x="820" y="612" font-size="11" fill="#64748b" font-style="italic">Illustrative — stages as described on the claim page itself;</text>
+<text x="820" y="628" font-size="11" fill="#64748b" font-style="italic">the BPMN model is not part of this repo.</text>
+<path d="M460,322 H540" stroke="#1B3A6B" stroke-width="2.5" fill="none" marker-start="url(#a-navy)" marker-end="url(#a-navy)"/>
+<text x="500" y="310" font-size="11" fill="#1B3A6B" text-anchor="middle" font-family="Consolas, Monaco, monospace">/api/*</text>
+<path d="M730,322 H800" stroke="#fc5d0d" stroke-width="2.5" fill="none" marker-start="url(#a-orange)" marker-end="url(#a-orange)"/>
+<circle cx="460" cy="436" r="11" fill="#16a34a" stroke="none" stroke-width="1"/><text x="460" y="440.5" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">4</text>
+<circle cx="1208" cy="418" r="11" fill="#7c3aed" stroke="none" stroke-width="1"/><text x="1208" y="422.5" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">5</text>
+<text x="40" y="566" font-size="11" font-weight="700" fill="#475569" letter-spacing="0.08em">HOW A CLAIM FLOWS</text>
+<circle cx="52" cy="594" r="10" fill="#1B3A6B" stroke="none" stroke-width="1"/><text x="52" y="598.5" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+<text x="72" y="599" font-size="13" fill="#0f172a">Page load: the proxy finds the process and fetches its start form from Camunda.</text>
+<circle cx="52" cy="622" r="10" fill="#1B3A6B" stroke="none" stroke-width="1"/><text x="52" y="626.5" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+<text x="72" y="627" font-size="13" fill="#0f172a">On submit, attached documents are uploaded to the document store first.</text>
+<circle cx="52" cy="650" r="10" fill="#1B3A6B" stroke="none" stroke-width="1"/><text x="52" y="654.5" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+<text x="72" y="655" font-size="13" fill="#0f172a">The form data and document references start a new claim process instance.</text>
+<circle cx="52" cy="678" r="10" fill="#16a34a" stroke="none" stroke-width="1"/><text x="52" y="682.5" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">4</text>
+<text x="72" y="683" font-size="13" fill="#0f172a">The confirmation card flips in once the process has started — never waiting for a decision.</text>
+<circle cx="52" cy="706" r="10" fill="#7c3aed" stroke="none" stroke-width="1"/><text x="52" y="710.5" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">5</text>
+<text x="72" y="711" font-size="13" fill="#0f172a">The process then runs on its own: validation, a decision, status emails (per the page).</text>
+</svg>

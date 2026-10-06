@@ -86,9 +86,29 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
+## How the hub works
+
+![How the Camunda Demo Hub works: the browser app talks to an auth proxy, which forwards to the Camunda 8 REST API; demos follow one of three patterns — start form, task loop or chat loop](docs/how-the-hub-works.svg)
+
+The browser app only ever talks to the auth proxy, which adds the OAuth credentials and forwards requests to the Camunda 8 REST API. Each demo is a folder with a `config.ts`, discovered automatically, and follows one of three patterns:
+
+| Pattern | What happens | Demos |
+|---|---|---|
+| **Start form** | Fetch the start form, upload any attached files, start the process, show a confirmation. The page does not wait for the result. | Onboarding, insurance claim |
+| **Task loop** | Start the process, poll for a user task, show its form, complete it, and repeat until the process ends. | Telecom techie helper |
+| **Chat loop** | Start with a question, poll for the agent's reply task, show the answer, send a follow-up, and repeat until the process ends. | Service agent, cluster explorer |
+
+A demo can replace the generic page with its own (`customFormPage`) and still use the same helpers and hooks. A PNG copy of the diagram is in [`docs/`](docs/how-the-hub-works.png).
+
+---
+
 ## Cluster Health Explorer
 
 `allied-henna-cluster-explorer` is an operator's view of a Camunda cluster: live health metrics on one side, and an AI agent you can ask about anything going on in the cluster on the other. Open it at [http://localhost:5173/allied-henna-cluster-explorer](http://localhost:5173/allied-henna-cluster-explorer) (or port 8091 with Docker).
+
+![Cluster Health Explorer architecture: the front end talks through an auth proxy to the agent process on cluster A and to the monitored cluster B; Slack, Teams, email and other channels reach the same agent through connectors](docs/cluster-health-explorer-architecture.svg)
+
+The agent process is **omnichannel**: this front end is just one way to talk to it. The same process can also be reached from Slack, Microsoft Teams, email or any other channel Camunda has a connector for. A PNG copy of the diagram for slides is in [`docs/`](docs/cluster-health-explorer-architecture.png).
 
 ### What it shows
 
@@ -140,6 +160,18 @@ The chat itself uses the normal `/api` route (start the process, poll for the re
 ### Where the code lives
 
 Everything is in `src/demos/allied-henna-cluster-explorer/`: `config.ts`, `ClusterExplorerPage.tsx` / `.css`, `clusterMetricsApi.ts` (API calls), `useClusterMetrics.ts` (polling), and `clusterStatus.ts` (the status banner and suggestion logic). The chat reuses the shared `useChatLoop` hook.
+
+---
+
+## Insurance claim demo
+
+`allied-henna-insurance-claim` is a **start-form** demo: a branded landing page with a claim form that starts the `InsuranceClaimValidationAgent` process. Open it at [http://localhost:5173/allied-henna-insurance-claim](http://localhost:5173/allied-henna-insurance-claim) (or port 8091 with Docker).
+
+![Insurance claim architecture: the claim page loads its start form from Camunda through the auth proxy, uploads attached documents, starts a process instance and shows a confirmation card without waiting for the decision](docs/insurance-claim-architecture.svg)
+
+- **The form lives in Camunda, not in this repo.** The page fetches the process's start form when it loads and renders it with form-js, so changing the claim fields means editing the form in Camunda. If the form has file-upload fields, attached documents are uploaded to Camunda's document store first and replaced by document references in the submitted data.
+- **Submit starts the process and nothing more.** The confirmation card flips in once the process instance has started. The page does not wait for, or display, the validation result.
+- **What happens afterwards is up to the process.** The stages drawn inside the Camunda box are taken from the claim page's own wording (AI-assisted validation, a decision, status emails) and are illustrative; the BPMN model is not part of this repo. A PNG copy of the diagram is in [`docs/`](docs/insurance-claim-architecture.png).
 
 ---
 

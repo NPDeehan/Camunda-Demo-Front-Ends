@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 936" width="1280" height="936" role="img" aria-labelledby="d-title d-desc" font-family="-apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="d-title">How the Camunda Demo Hub works</title>
+<desc id="d-desc">The browser app talks only to an auth proxy, which adds OAuth credentials and forwards requests to the Camunda 8 REST API. Demos are folders with a config.ts that the hub discovers automatically, and each demo follows one of three patterns: start form, task loop, or chat loop.</desc>
+<defs>
+<marker id="a-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#003399"/></marker>
+<marker id="a-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0891b2"/></marker>
+<marker id="a-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker>
+<marker id="a-slate" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+<marker id="a-orange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fc5d0d"/></marker>
+<marker id="a-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97706"/></marker>
+<marker id="a-navy" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1B3A6B"/></marker>
+<marker id="a-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+<marker id="a-sky" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+</defs>
+<rect x="0.5" y="0.5" width="1279" height="935" rx="16" fill="#ffffff" stroke="#e2e8f0"/>
+<text x="40" y="50" font-size="24" font-weight="700" fill="#0f172a">How the Camunda Demo Hub works</text>
+<text x="40" y="76" font-size="14" fill="#475569">One React app, one auth proxy, any number of demos — each demo is a folder with a config.ts</text>
+<rect x="40" y="104" width="520" height="300" rx="14" fill="#eff6ff" stroke="#003399" stroke-width="2"/>
+<text x="60" y="132" font-size="11" font-weight="700" fill="#003399" letter-spacing="0.08em">BROWSER</text>
+<text x="60" y="152" font-size="13" font-weight="700" fill="#0f172a">React + Vite single-page app</text>
+<rect x="60" y="168" width="236" height="70" rx="9" fill="#ffffff" stroke="#003399" stroke-width="1"/>
+<text x="74" y="190" font-size="12.5" font-weight="700" fill="#003399">Demo registry</text>
+<text x="74" y="209" font-size="11.5" fill="#475569">import.meta.glob picks up every</text>
+<text x="74" y="225" font-size="11.5" fill="#475569">src/demos/&lt;id&gt;/config.ts</text>
+<rect x="304" y="168" width="236" height="70" rx="9" fill="#ffffff" stroke="#003399" stroke-width="1"/>
+<text x="318" y="190" font-size="12.5" font-weight="700" fill="#003399">Hub page</text>
+<text x="318" y="209" font-size="11.5" fill="#475569">A card per demo; clicking one</text>
+<text x="318" y="225" font-size="11.5" fill="#475569">opens its page at /&lt;id&gt;</text>
+<rect x="60" y="250" width="236" height="70" rx="9" fill="#ffffff" stroke="#003399" stroke-width="1"/>
+<text x="74" y="272" font-size="12.5" font-weight="700" fill="#003399">Demo shell</text>
+<text x="74" y="291" font-size="11.5" fill="#475569">Applies the demo's colour theme;</text>
+<text x="74" y="307" font-size="11.5" fill="#475569">generic demos get a branded header</text>
+<rect x="304" y="250" width="236" height="70" rx="9" fill="#ffffff" stroke="#003399" stroke-width="1"/>
+<text x="318" y="272" font-size="12.5" font-weight="700" fill="#003399">Demo page</text>
+<text x="318" y="291" font-size="11.5" fill="#475569">Generic form, task loop, chat —</text>
+<text x="318" y="307" font-size="11.5" fill="#475569">or the demo's own custom page</text>
+<rect x="60" y="332" width="480" height="64" rx="9" fill="#ffffff" stroke="#003399" stroke-width="1"/>
+<text x="74" y="352" font-size="12.5" font-weight="700" fill="#003399">Shared helpers</text>
+<text x="74" y="369" font-size="11.5" fill="#475569">processApi.ts → camundaClient.ts — every call goes to /api</text>
+<text x="74" y="385" font-size="11.5" fill="#475569">useStartForm · useTaskLoop · useChatLoop · CamundaFormRenderer (form-js)</text>
+<rect x="630" y="104" width="200" height="300" rx="14" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+<text x="650" y="132" font-size="11" font-weight="700" fill="#475569" letter-spacing="0.08em">AUTH PROXY</text>
+<text x="650" y="152" font-size="13" font-weight="700" fill="#0f172a">Express · port 3001</text>
+<text x="650" y="184" font-size="11.5" fill="#475569">Gets an OAuth token (client</text>
+<text x="650" y="200" font-size="11.5" fill="#475569">credentials) and caches it</text>
+<text x="650" y="226" font-size="11.5" fill="#475569">Adds it to every request, so</text>
+<text x="650" y="242" font-size="11.5" fill="#475569">the browser never sees secrets</text>
+<text x="650" y="268" font-size="11.5" fill="#475569">Streams file uploads through</text>
+<text x="650" y="284" font-size="11.5" fill="#475569">(/api/documents)</text>
+<text x="650" y="310" font-size="11.5" fill="#475569">Optional /api/monitor/* route:</text>
+<text x="650" y="326" font-size="11.5" fill="#475569">a second cluster, read-only</text>
+<text x="650" y="366" font-size="11" fill="#64748b">Runs as npm run proxy, Docker</text>
+<text x="650" y="382" font-size="11" fill="#64748b">Compose, or the standalone binary</text>
+<rect x="900" y="104" width="340" height="300" rx="14" fill="#fff7ed" stroke="#fc5d0d" stroke-width="2"/>
+<text x="920" y="132" font-size="11" font-weight="700" fill="#c2410c" letter-spacing="0.08em">CAMUNDA 8 CLUSTER</text>
+<text x="920" y="152" font-size="13" font-weight="700" fill="#0f172a">Orchestration Cluster REST API (v2)</text>
+<rect x="920" y="168" width="300" height="30" rx="8" fill="#ffffff" stroke="#fdba74" stroke-width="1"/>
+<text x="934" y="188" font-size="12" fill="#0f172a">Process definitions · start forms</text>
+<rect x="920" y="204" width="300" height="30" rx="8" fill="#ffffff" stroke="#fdba74" stroke-width="1"/>
+<text x="934" y="224" font-size="12" fill="#0f172a">Process instances (start, status)</text>
+<rect x="920" y="240" width="300" height="30" rx="8" fill="#ffffff" stroke="#fdba74" stroke-width="1"/>
+<text x="934" y="260" font-size="12" fill="#0f172a">User tasks · task forms · completion</text>
+<rect x="920" y="276" width="300" height="30" rx="8" fill="#ffffff" stroke="#fdba74" stroke-width="1"/>
+<text x="934" y="296" font-size="12" fill="#0f172a">Variables · documents</text>
+<rect x="920" y="316" width="300" height="72" rx="9" fill="#f5f3ff" stroke="#a56eff" stroke-width="1.5"/>
+<text x="934" y="338" font-size="12.5" font-weight="700" fill="#6d28d9">Your BPMN processes</text>
+<text x="934" y="356" font-size="11.5" fill="#475569">Found by the processId in each config.ts —</text>
+<text x="934" y="372" font-size="11.5" fill="#475569">agents, forms, user tasks, connectors…</text>
+<path d="M560,254 H630" stroke="#003399" stroke-width="2.5" fill="none" marker-start="url(#a-blue)" marker-end="url(#a-blue)"/>
+<text x="595" y="242" font-size="11" fill="#003399" text-anchor="middle" font-family="Consolas, Monaco, monospace">/api/*</text>
+<path d="M830,254 H900" stroke="#fc5d0d" stroke-width="2.5" fill="none" marker-start="url(#a-orange)" marker-end="url(#a-orange)"/>
+<text x="865" y="232" font-size="10.5" fill="#c2410c" text-anchor="middle">REST +</text>
+<text x="865" y="244" font-size="10.5" fill="#c2410c" text-anchor="middle">token</text>
+<text x="40" y="444" font-size="11" font-weight="700" fill="#475569" letter-spacing="0.08em">THREE INTERACTION PATTERNS</text>
+<text x="262" y="444" font-size="12" fill="#64748b">Every demo uses one of them — the shared hooks do the polling for you</text>
+<rect x="40" y="462" width="1200" height="120" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+<text x="56" y="492" font-size="15" font-weight="700" fill="#2563eb">1 · Start form</text>
+<text x="56" y="512" font-size="11.5" fill="#475569">Fire and forget</text>
+<rect x="56" y="530" width="86.0" height="24" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="1"/>
+<text x="99.0" y="546" font-size="11" fill="#0f172a" text-anchor="middle">Onboarding</text>
+<rect x="150.0" y="530" width="118.0" height="24" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="1"/>
+<text x="209.0" y="546" font-size="11" fill="#0f172a" text-anchor="middle">Insurance claim</text>
+<rect x="300.0" y="476" width="168" height="46" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1"/>
+<text x="384.0" y="503" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Fetch the start form</text>
+<text x="384.0" y="540" font-size="10.5" fill="#475569" text-anchor="middle">process-definitions/search</text>
+<text x="384.0" y="555" font-size="10.5" fill="#475569" text-anchor="middle">then …/{key}/form</text>
+<path d="M469.0,499 H484.5" stroke="#2563eb" stroke-width="2" fill="none" marker-end="url(#a-sky)"/>
+<rect x="485.5" y="476" width="168" height="46" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1"/>
+<text x="569.5" y="494" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Claimant fills in the</text>
+<text x="569.5" y="510" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">form</text>
+<text x="569.5" y="540" font-size="10.5" fill="#475569" text-anchor="middle">rendered in the browser</text>
+<text x="569.5" y="555" font-size="10.5" fill="#475569" text-anchor="middle">with form-js</text>
+<path d="M654.5,499 H670.0" stroke="#2563eb" stroke-width="2" fill="none" marker-end="url(#a-sky)"/>
+<rect x="671.0" y="476" width="168" height="46" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1"/>
+<text x="755.0" y="503" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Upload attached files</text>
+<text x="755.0" y="540" font-size="10.5" fill="#475569" text-anchor="middle">POST /documents</text>
+<text x="755.0" y="555" font-size="10.5" fill="#475569" text-anchor="middle">→ document references</text>
+<path d="M840.0,499 H855.5" stroke="#2563eb" stroke-width="2" fill="none" marker-end="url(#a-sky)"/>
+<rect x="856.5" y="476" width="168" height="46" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1"/>
+<text x="940.5" y="503" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Start the process</text>
+<text x="940.5" y="540" font-size="10.5" fill="#475569" text-anchor="middle">POST /process-instances</text>
+<text x="940.5" y="555" font-size="10.5" fill="#475569" text-anchor="middle">form data as variables</text>
+<path d="M1025.5,499 H1041.0" stroke="#2563eb" stroke-width="2" fill="none" marker-end="url(#a-sky)"/>
+<rect x="1042.0" y="476" width="168" height="46" rx="9" fill="#ffffff" stroke="#2563eb" stroke-width="1"/>
+<text x="1126.0" y="503" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Show confirmation</text>
+<text x="1126.0" y="540" font-size="10.5" fill="#475569" text-anchor="middle">success page (or card)</text>
+<text x="1126.0" y="555" font-size="10.5" fill="#475569" text-anchor="middle">no waiting, no polling</text>
+<rect x="40" y="594" width="1200" height="120" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+<text x="56" y="624" font-size="15" font-weight="700" fill="#d97706">2 · Task loop</text>
+<text x="56" y="644" font-size="11.5" fill="#475569">Wait for an async step, then respond</text>
+<rect x="56" y="662" width="156.4" height="24" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="1"/>
+<text x="134.2" y="678" font-size="11" fill="#0f172a" text-anchor="middle">Telecom techie helper</text>
+<rect x="300.0" y="608" width="168" height="46" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1"/>
+<text x="384.0" y="626" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Fill in the form &amp; start</text>
+<text x="384.0" y="642" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">the process</text>
+<text x="384.0" y="672" font-size="10.5" fill="#475569" text-anchor="middle">same as pattern 1,</text>
+<text x="384.0" y="687" font-size="10.5" fill="#475569" text-anchor="middle">POST /process-instances</text>
+<path d="M469.0,631 H484.5" stroke="#d97706" stroke-width="2" fill="none" marker-end="url(#a-amber)"/>
+<rect x="485.5" y="608" width="168" height="46" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1"/>
+<text x="569.5" y="635" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Poll for the user task</text>
+<text x="569.5" y="672" font-size="10.5" fill="#475569" text-anchor="middle">POST /user-tasks/search</text>
+<text x="569.5" y="687" font-size="10.5" fill="#475569" text-anchor="middle">filtered by taskDefinitionIds</text>
+<path d="M654.5,631 H670.0" stroke="#d97706" stroke-width="2" fill="none" marker-end="url(#a-amber)"/>
+<rect x="671.0" y="608" width="168" height="46" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1"/>
+<text x="755.0" y="635" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Show the task's form</text>
+<text x="755.0" y="672" font-size="10.5" fill="#475569" text-anchor="middle">GET /user-tasks/{key}/form</text>
+<text x="755.0" y="687" font-size="10.5" fill="#475569" text-anchor="middle">+ the instance's variables</text>
+<path d="M840.0,631 H855.5" stroke="#d97706" stroke-width="2" fill="none" marker-end="url(#a-amber)"/>
+<rect x="856.5" y="608" width="168" height="46" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1"/>
+<text x="940.5" y="635" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Complete the task</text>
+<text x="940.5" y="672" font-size="10.5" fill="#475569" text-anchor="middle">POST /user-tasks/{key}/</text>
+<text x="940.5" y="687" font-size="10.5" fill="#475569" text-anchor="middle">completion, then poll again</text>
+<path d="M1025.5,631 H1041.0" stroke="#d97706" stroke-width="2" fill="none" marker-end="url(#a-amber)"/>
+<rect x="1042.0" y="608" width="168" height="46" rx="9" fill="#ffffff" stroke="#d97706" stroke-width="1"/>
+<text x="1126.0" y="626" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Process ends → success</text>
+<text x="1126.0" y="642" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">page</text>
+<text x="1126.0" y="672" font-size="10.5" fill="#475569" text-anchor="middle">POST /process-instances/</text>
+<text x="1126.0" y="687" font-size="10.5" fill="#475569" text-anchor="middle">search until it has ended</text>
+<rect x="40" y="726" width="1200" height="120" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="56" y="756" font-size="15" font-weight="700" fill="#7c3aed">3 · Chat loop</text>
+<text x="56" y="776" font-size="11.5" fill="#475569">A multi-turn conversation</text>
+<rect x="56" y="794" width="105.2" height="24" rx="12" fill="#ffffff" stroke="#7c3aed" stroke-width="1"/>
+<text x="108.6" y="810" font-size="11" fill="#0f172a" text-anchor="middle">Service agent</text>
+<rect x="169.2" y="794" width="124.4" height="24" rx="12" fill="#ffffff" stroke="#7c3aed" stroke-width="1"/>
+<text x="231.39999999999998" y="810" font-size="11" fill="#0f172a" text-anchor="middle">Cluster explorer</text>
+<rect x="300.0" y="740" width="168" height="46" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1"/>
+<text x="384.0" y="758" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Start with the first</text>
+<text x="384.0" y="774" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">question</text>
+<text x="384.0" y="804" font-size="10.5" fill="#475569" text-anchor="middle">POST /process-instances</text>
+<text x="384.0" y="819" font-size="10.5" fill="#475569" text-anchor="middle">variable: the question</text>
+<path d="M469.0,763 H484.5" stroke="#7c3aed" stroke-width="2" fill="none" marker-end="url(#a-purple)"/>
+<rect x="485.5" y="740" width="168" height="46" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1"/>
+<text x="569.5" y="758" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Poll for the agent's</text>
+<text x="569.5" y="774" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">reply task</text>
+<text x="569.5" y="804" font-size="10.5" fill="#475569" text-anchor="middle">POST /user-tasks/search</text>
+<text x="569.5" y="819" font-size="10.5" fill="#475569" text-anchor="middle">the task's element ID</text>
+<path d="M654.5,763 H670.0" stroke="#7c3aed" stroke-width="2" fill="none" marker-end="url(#a-purple)"/>
+<rect x="671.0" y="740" width="168" height="46" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1"/>
+<text x="755.0" y="758" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Show the answer</text>
+<text x="755.0" y="774" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">(Markdown)</text>
+<text x="755.0" y="804" font-size="10.5" fill="#475569" text-anchor="middle">the task's effective</text>
+<text x="755.0" y="819" font-size="10.5" fill="#475569" text-anchor="middle">variables → answer</text>
+<path d="M840.0,763 H855.5" stroke="#7c3aed" stroke-width="2" fill="none" marker-end="url(#a-purple)"/>
+<rect x="856.5" y="740" width="168" height="46" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1"/>
+<text x="940.5" y="767" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">Send a follow-up</text>
+<text x="940.5" y="804" font-size="10.5" fill="#475569" text-anchor="middle">…/completion with the</text>
+<text x="940.5" y="819" font-size="10.5" fill="#475569" text-anchor="middle">follow-up variable</text>
+<path d="M1025.5,763 H1041.0" stroke="#7c3aed" stroke-width="2" fill="none" marker-end="url(#a-purple)"/>
+<rect x="1042.0" y="740" width="168" height="46" rx="9" fill="#ffffff" stroke="#7c3aed" stroke-width="1"/>
+<text x="1126.0" y="758" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">↻ Repeat until the</text>
+<text x="1126.0" y="774" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">process ends</text>
+<text x="1126.0" y="804" font-size="10.5" fill="#475569" text-anchor="middle">then “conversation ended”</text>
+<text x="1126.0" y="819" font-size="10.5" fill="#475569" text-anchor="middle">errors → Retry button</text>
+<rect x="40" y="866" width="590" height="44" rx="10" fill="#fff8d6" stroke="#FFCC00" stroke-width="1.5"/>
+<text x="335" y="893" font-size="12.5" font-weight="700" fill="#7a5b00" text-anchor="middle">Add a demo: create src/demos/&lt;id&gt;/config.ts — there is nothing to register.</text>
+<rect x="650" y="866" width="590" height="44" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.2"/>
+<text x="945" y="893" font-size="12.5" font-weight="600" fill="#475569" text-anchor="middle">A demo can swap the generic page for its own (customFormPage), keeping the same helpers.</text>
+</svg>
