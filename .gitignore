@@ -15,9 +15,6 @@ dist-ssr
 .env
 .claude/settings.local.json
 
-# Docker
-.dockerignore
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

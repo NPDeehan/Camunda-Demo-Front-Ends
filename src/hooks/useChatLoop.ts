@@ -5,6 +5,7 @@ import {
   completeUserTask,
   getProcessInstanceState,
 } from '../api/processApi';
+import { CamundaApiError } from '../api/camundaClient';
 
 export interface ChatMessage {
   role: 'agent' | 'user';
@@ -25,6 +26,9 @@ export interface ChatLoopConfig {
   pollIntervalMs?: number;
 }
 
+/** What was in flight when the loop failed, so retry() can pick up from there */
+type Failure = { kind: 'poll' } | { kind: 'send'; text: string };
+
 export function useChatLoop(processInstanceKey: string, config: ChatLoopConfig) {
   const { taskDefinitionId, answerVariable, replyVariable, pollIntervalMs = 2000 } = config;
 
@@ -32,11 +36,14 @@ export function useChatLoop(processInstanceKey: string, config: ChatLoopConfig) 
   const [status, setStatus] = useState<ChatStatus>('polling');
   const [activeTaskKey, setActiveTaskKey] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [errorStatus, setErrorStatus] = useState<number | null>(null);
+  const [retryable, setRetryable] = useState(false);
 
   const activeRef = useRef(true);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasSeenActiveRef = useRef(false);
   const seenTaskKeysRef = useRef<Set<string>>(new Set());
+  const failureRef = useRef<Failure | null>(null);
 
   const clearTimer = () => {
     if (timerRef.current !== null) {
@@ -44,6 +51,14 @@ export function useChatLoop(processInstanceKey: string, config: ChatLoopConfig) 
       timerRef.current = null;
     }
   };
+
+  const fail = useCallback((e: unknown, failure: Failure) => {
+    failureRef.current = failure;
+    setError((e as Error).message);
+    setErrorStatus(e instanceof CamundaApiError ? e.status : null);
+    setRetryable(e instanceof CamundaApiError && e.transient);
+    setStatus('error');
+  }, []);
 
   const poll = useCallback(async () => {
     if (!activeRef.current) return;
@@ -56,7 +71,14 @@ export function useChatLoop(processInstanceKey: string, config: ChatLoopConfig) 
       if (freshTasks.length > 0) {
         const task = freshTasks[0];
         seenTaskKeysRef.current.add(task.userTaskKey);
-        const raw = await getUserTaskVariable(task.userTaskKey, answerVariable);
+        let raw: unknown;
+        try {
+          raw = await getUserTaskVariable(task.userTaskKey, answerVariable);
+        } catch (e) {
+          // Let the retry see this task again rather than silently skipping it
+          seenTaskKeysRef.current.delete(task.userTaskKey);
+          throw e;
+        }
         if (!activeRef.current) return;
 
         const answer = typeof raw === 'string' ? raw : (raw != null ? JSON.stringify(raw) : null);
@@ -97,12 +119,9 @@ export function useChatLoop(processInstanceKey: string, config: ChatLoopConfig) 
 
       timerRef.current = setTimeout(poll, pollIntervalMs);
     } catch (e) {
-      if (activeRef.current) {
-        setError((e as Error).message);
-        setStatus('error');
-      }
+      if (activeRef.current) fail(e, { kind: 'poll' });
     }
-  }, [processInstanceKey, taskDefinitionId, answerVariable, pollIntervalMs]);
+  }, [processInstanceKey, taskDefinitionId, answerVariable, pollIntervalMs, fail]);
 
   useEffect(() => {
     activeRef.current = true;
@@ -113,27 +132,59 @@ export function useChatLoop(processInstanceKey: string, config: ChatLoopConfig) 
     };
   }, [poll]);
 
+  /** Completes the open task with the user's text, then resumes polling. */
+  const completeAndResume = useCallback(
+    async (taskKey: string, text: string, isRetry: boolean) => {
+      setStatus('sending');
+      try {
+        await completeUserTask(taskKey, { [replyVariable]: text });
+      } catch (e) {
+        // On a retry, a 404/409 usually means the earlier attempt did go through
+        // (the gateway failed after Camunda processed it). Carry on and let polling decide.
+        const alreadyDone = isRetry && e instanceof CamundaApiError && (e.status === 404 || e.status === 409);
+        if (!alreadyDone) {
+          if (activeRef.current) fail(e, { kind: 'send', text });
+          return;
+        }
+      }
+      setActiveTaskKey(null);
+      if (!activeRef.current) return;
+      setStatus('polling');
+      // Wait 3 s before polling — gives Camunda time to close the task
+      timerRef.current = setTimeout(poll, 3000);
+    },
+    [replyVariable, poll, fail],
+  );
+
   const sendReply = useCallback(
     async (text: string) => {
       if (status !== 'agent-replied' || !activeTaskKey) return;
-      setStatus('sending');
       setMessages(prev => [...prev, { role: 'user', content: text }]);
-      try {
-        await completeUserTask(activeTaskKey, { [replyVariable]: text });
-        setActiveTaskKey(null);
-        if (!activeRef.current) return;
-        setStatus('polling');
-        // Wait 3 s before polling — gives Camunda time to close the task
-        timerRef.current = setTimeout(poll, 3000);
-      } catch (e) {
-        if (activeRef.current) {
-          setError((e as Error).message);
-          setStatus('error');
-        }
-      }
+      await completeAndResume(activeTaskKey, text, false);
     },
-    [status, activeTaskKey, replyVariable, poll],
+    [status, activeTaskKey, completeAndResume],
   );
 
-  return { messages, status, sendReply, error };
+  /** Resumes after a transient failure, from whichever step failed. */
+  const retry = useCallback(async () => {
+    const failure = failureRef.current;
+    if (status !== 'error' || !failure) return;
+    failureRef.current = null;
+    setError(null);
+    setErrorStatus(null);
+    setRetryable(false);
+
+    if (failure.kind === 'send' && activeTaskKey) {
+      await completeAndResume(activeTaskKey, failure.text, true);
+    } else if (activeTaskKey) {
+      // Failed while waiting on the user — go back to accepting their reply
+      setStatus('agent-replied');
+      timerRef.current = setTimeout(poll, pollIntervalMs * 3);
+    } else {
+      setStatus('polling');
+      poll();
+    }
+  }, [status, activeTaskKey, completeAndResume, poll, pollIntervalMs]);
+
+  return { messages, status, sendReply, error, errorStatus, retryable, retry };
 }

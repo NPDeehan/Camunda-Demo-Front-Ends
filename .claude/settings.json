@@ -10,9 +10,6 @@
       "Bash(docker compose *)",
       "Bash(bun build *)",
       "Bash(bun --version)"
-    ],
-    "additionalDirectories": [
-      "c:\\Users\\NiallDeehan\\Documents\\GitHub\\Camunda-Demo-Front-Ends\\.claude"
     ]
   }
 }

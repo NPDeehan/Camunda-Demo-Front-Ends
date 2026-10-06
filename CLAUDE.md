@@ -87,6 +87,7 @@ server/
 - `allied-henna-onboarding` — uses `customFormPage`; fictional bank customer onboarding
 - `allied-henna-insurance-claim` — insurance claim flow for same fictional brand
 - `allied-henna-telecom` — uses `taskLoop` with `taskDefinitionIds: ['SendSuggestionToTechie']`; field technician submits a blocking issue, AI agent creates a user task with a response (reference implementation for the task loop pattern)
+- `allied-henna-cluster-explorer` — uses `customFormPage`; cluster health dashboard (metrics fetched from a *separate* monitored cluster via the read-only `/api/monitor/*` proxy route in a demo-local `clusterMetricsApi.ts`) alongside a `useChatLoop` chat with the `Camunda-Cluster-Explorer` agent process
 
 ## Environment variables
 
@@ -99,3 +100,4 @@ Defined in `.env` (copy from `.env.example`):
 | `CAMUNDA_CLIENT_ID` | from Camunda Console |
 | `CAMUNDA_CLIENT_SECRET` | from Camunda Console |
 | `CAMUNDA_TOKEN_AUDIENCE` | `zeebe.camunda.io` |
+| `MONITOR_CAMUNDA_BASE_URL` / `_CLIENT_ID` / `_CLIENT_SECRET` | Optional second cluster for the read-only `/api/monitor/*` route (only GET and `POST …/search` allowed). Falls back to the primary cluster. `_OAUTH_URL` / `_TOKEN_AUDIENCE` default to the primary values |

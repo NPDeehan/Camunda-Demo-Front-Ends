@@ -4,14 +4,20 @@ services:
       context: .
       target: proxy
     env_file: .env
+    environment:
+      # Inside the container the proxy must listen on all interfaces so nginx can reach it;
+      # who can reach it from outside is controlled by the published port below.
+      PROXY_HOST: 0.0.0.0
     ports:
-      - "3001:3001"
+      # The proxy has no authentication — keep it on this machine unless you set BIND_ADDRESS=0.0.0.0 in .env
+      - "${BIND_ADDRESS:-127.0.0.1}:3001:3001"
 
   frontend:
     build:
       context: .
       target: frontend
     ports:
-      - "8091:80"
+      # nginx forwards /api to the proxy, so exposing this port exposes the proxy too
+      - "${BIND_ADDRESS:-127.0.0.1}:8091:80"
     depends_on:
       - proxy
